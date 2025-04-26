@@ -1,0 +1,643 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="icon" type="image/png" href="logo_red2.jpg">
+  <title>Ambulancias</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 20px;
+      background-color: #f5f5f5;
+    }
+    .container {
+      background-color: white;
+      border-radius: 8px;
+      padding: 25px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+    .logo {
+      text-align: center;
+      margin-bottom: 20px;
+    }
+    .logo img {
+      max-width: 200px;
+      height: auto;
+    }
+    h1 {
+      color: #2c3e50;
+      text-align: center;
+      margin-bottom: 30px;
+      font-size: 24px;
+    }
+    .form-group {
+      margin-bottom: 20px;
+    }
+    label {
+      display: block;
+      margin-bottom: 5px;
+      font-weight: bold;
+    }
+    input[type="text"] {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 16px;
+    }
+    button {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+    }
+    button:hover {
+      background-color: #2980b9;
+    }
+    .error {
+      color: #e74c3c;
+      font-weight: bold;
+      text-align: center;
+    }
+    .datos-usuario {
+      line-height: 1.8;
+    }
+    .info-row {
+      margin-bottom: 10px;
+      display: flex;
+    }
+    .info-label {
+      font-weight: bold;
+      min-width: 130px;
+    }
+    .info-value {
+      flex: 1;
+    }
+    .header {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+    .title {
+      background-color: #3498db;
+      color: white;
+      padding: 10px;
+      border-radius: 4px;
+      margin-bottom: 20px;
+      text-align: center;
+      font-weight: bold;
+    }
+    .pagos-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    .pagos-table th, .pagos-table td {
+      border: 1px solid #ddd;
+      padding: 8px;
+      text-align: center;
+    }
+    .pagos-table th {
+      background-color: #f2f2f2;
+    }
+    .estado {
+      font-weight: bold;
+    }
+    .estado-bueno {
+      color: #27ae60;
+    }
+    .estado-regular {
+      color: #f39c12;
+    }
+    .estado-malo {
+      color: #e74c3c;
+    }
+    .error-message {
+      color: #e74c3c;
+      font-size: 13px;
+      margin-top: 5px;
+      display: none;
+    }
+
+    /* Estilos para los cuadritos de microredes */
+    .microredes-list {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 15px;
+      margin-top: 20px;
+    }
+    
+    .microred-card {
+      background-color: #fff;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      padding: 15px;
+      cursor: pointer;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border-left: 4px solid #3498db;
+    }
+    
+    .microred-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    }
+    
+    .microred-card h3 {
+      margin: 0 0 10px 0;
+      color: #2c3e50;
+      font-size: 18px;
+    }
+    
+    .microred-card p {
+      margin: 5px 0;
+      color: #7f8c8d;
+    }
+    
+    .microred-card .ver-detalle {
+      background-color: #3498db;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 4px;
+      margin-top: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      transition: background-color 0.2s;
+    }
+    
+    .microred-card .ver-detalle:hover {
+      background-color: #2980b9;
+    }
+    
+    /* Estilos para la vista detalle */
+    .vista-principal, .vista-detalle {
+      transition: opacity 0.3s ease-in-out;
+    }
+    
+    .vista-detalle {
+      display: none;
+    }
+    
+    .boton-volver {
+      background-color: #7f8c8d;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 4px;
+      margin-bottom: 15px;
+      cursor: pointer;
+      font-size: 14px;
+      display: inline-block;
+    }
+    
+    .boton-volver:hover {
+      background-color: #6c7a7d;
+    }
+    
+    /* Mejora la responsividad */
+    @media (max-width: 600px) {
+      body {
+        padding: 10px;
+      }
+      
+      .container {
+        padding: 15px;
+      }
+      
+      h1 {
+        font-size: 20px;
+      }
+      
+      .microredes-list {
+        grid-template-columns: 1fr;
+      }
+      
+      .info-row {
+        flex-direction: column;
+        margin-bottom: 15px;
+      }
+      
+      .info-label {
+        min-width: auto;
+        margin-bottom: 3px;
+      }
+      
+      .info-value {
+        word-break: break-word;
+      }
+      
+      .pagos-table {
+        font-size: 14px;
+      }
+      
+      .pagos-table th, .pagos-table td {
+        padding: 5px;
+      }
+      
+      .title {
+        font-size: 16px;
+        padding: 8px;
+      }
+    }
+
+    /* Asegura que los textos largos se ajusten */
+    .info-value {
+      overflow-wrap: break-word;
+      word-wrap: break-word;
+    }
+
+    /* Mejora la visualización de la tabla */
+    .pagos-table {
+      table-layout: fixed;
+    }
+    
+    /* Buscador */
+    .search-container {
+      margin-bottom: 20px;
+    }
+    
+    #buscador {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 4px;
+      box-sizing: border-box;
+      font-size: 16px;
+      margin-bottom: 10px;
+    }
+
+    /* Estilos para vehículos */
+    .vehiculo-container {
+      border: 1px solid #e0e0e0;
+      border-radius: 6px;
+      padding: 15px;
+      margin-bottom: 20px;
+      background-color: #f9f9f9;
+    }
+    
+    .vehiculo-header {
+      font-size: 18px;
+      color: #3498db;
+      margin-bottom: 15px;
+      padding-bottom: 5px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+    
+    .vehiculos-table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 15px;
+    }
+    
+    .vehiculos-table th, .vehiculos-table td {
+      border: 1px solid #ddd;
+      padding: 10px;
+      text-align: left;
+    }
+    
+    .vehiculos-table th {
+      background-color: #f2f2f2;
+      font-weight: bold;
+    }
+    
+    .vehiculos-table tr:nth-child(even) {
+      background-color: #f9f9f9;
+    }
+    
+    .vehiculos-table tr:hover {
+      background-color: #f1f1f1;
+    }
+    
+    /* Estilo para el icono de ambulancia */
+    .ambulance-icon {
+      vertical-align: middle;
+      margin-right: 10px;
+      width: 24px;
+      height: 24px;
+    }
+    
+    /* Estilo para el encabezado con icono */
+    .card-header {
+      display: flex;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    
+    .card-header h3 {
+      margin: 0;
+    }
+    
+    .ambulance-svg {
+      fill: #3498db;
+      width: 24px;
+      height: 24px;
+      margin-right: 10px;
+    }
+
+
+    .datos-con-imagen {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.imagen-vehiculo img {
+  width: 350px;
+  height: auto;
+  border-radius: 8px;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+        object-fit: cover;
+}
+
+/* Responsive para pantalla pequeña */
+@media (max-width: 768px) {
+  .datos-con-imagen {
+    flex-direction: column-reverse;
+    align-items: flex-start; /* <- OJO, ya no center */
+  }
+
+  .imagen-vehiculo {
+    width: 100%;
+    display: flex;
+    justify-content: center; /* <- centramos solo la imagen */
+    margin-bottom: 10px;
+  }
+
+  .imagen-vehiculo img {
+    width: 100%;
+    max-width: 300px;
+  }
+}
+
+
+
+  </style>
+</head>
+
+<body>
+  <div class="container">
+    <div class="logo">
+      <img src="logo_red.jpg" alt="Logo Consulta MicroRedes">
+    </div>
+    
+    <div class="vista-principal">
+      <h1>Sistema de Consulta de Ambulancias por MicroRed</h1>
+      
+      <div class="search-container">
+        <input type="text" id="buscador" placeholder="Buscar por MicroRed..." onkeyup="filtrarMicroRedes()">
+      </div>
+      
+      <div class="microredes-list" id="lista-microredes">
+        <!-- Aquí se cargarán los cuadritos de MicroRedes -->
+      </div>
+    </div>
+    
+    <div class="vista-detalle" id="detalle-microred">
+      <button class="boton-volver" onclick="mostrarListado()">← Volver al listado</button>
+      <div id="contenido-detalle"></div>
+    </div>
+  </div>
+
+  <script>
+    // Datos de vehículos importados
+    const datos = [
+    {"MicroRed": "Leymebamba", "Ipress": "CENTRO DE SALUD CHUQUIBAMBA", "Estado": "Bueno", "Marca": "TOYOTA", "Modelo": "HILUX", "Codigo Patrimonial": "678200500015", "Placa": "EUH-640", "Año de Fabricacion": "2023", "SOAT": "46078", "Revision Tecnica": "1/1/0001", "DNI Conductor": "44426318", "Nombres del Conductor": "HANS MIKKEL ABANTO VALDIVIA", "Tipo de Contrato": "Nombrado", "Licencia": "https://drive.google.com/open?id=1nH2pT6Qd3wZmgfNI8gFC2kgMgmogXckh", "Nro de Licencia": "W44426318", "Fecha Vencimiento - Licencia": "46052", "Celular": "966112950" },
+    {"MicroRed": "Santo Tomas", "Ipress": "CENTRO DE SALUD SANTO TOMAS", "Estado": "Bueno", "Marca": "TOYOTA", "Modelo": "HILUX", "Codigo Patrimonial": "NO TIENE", "Placa": "EUH-414", "Año de Fabricacion": "2019", "SOAT": "45841", "Revision Tecnica": "45841", "DNI Conductor": "42473516", "Nombres del Conductor": "ROGER JULCA RITUAY", "Tipo de Contrato": "Contrato CAS", "Licencia": "", "Nro de Licencia": "W42473516", "Fecha Vencimiento - Licencia": "46350", "Celular": "962881400" },
+    {"MicroRed": "Santo Tomas", "Ipress": "CENTRO DE SALUD SANTO TOMAS", "Estado": "Regular", "Marca": "VOLKSWAGEN", "Modelo": "TRANSPORTER", "Codigo Patrimonial": "NO TIENE", "Placa": "EUC-982", "Año de Fabricacion": "2013", "SOAT": "46046", "Revision Tecnica": "45932", "DNI Conductor": "43242257", "Nombres del Conductor": "ELVIS PIZARRO SOLIS", "Tipo de Contrato": "Contrato CAS", "Licencia": "", "Nro de Licencia": "Q43242257", "Fecha Vencimiento - Licencia": "45863", "Celular": "950967863" },
+    {"MicroRed": "Maria", "Ipress": "CENTRO DE SALUD COCABAMBA", "Estado": "Regular", "Marca": "TOYOTA", "Modelo": "HILUX", "Codigo Patrimonial": "678200500008", "Placa": "EUD-362", "Año de Fabricacion": "1995", "SOAT": "46135", "Revision Tecnica": "45955", "DNI Conductor": "NO CUENTA", "Nombres del Conductor": "NO CUENTA", "Tipo de Contrato": "NO CUENTA", "Licencia": "", "Nro de Licencia": "", "Fecha Vencimiento - Licencia": "", "Celular": "" }
+    ];
+
+    // Función para obtener MicroRedes únicas
+    function obtenerMicroRedesUnicas() {
+      const microredesUnicas = new Set();
+      
+      datos.forEach(vehiculo => {
+        microredesUnicas.add(vehiculo.MicroRed);
+      });
+      
+      return Array.from(microredesUnicas).sort();
+    }
+
+    // Función para contar vehículos por MicroRed
+    function contarVehiculosPorMicroRed(microred) {
+      return datos.filter(vehiculo => vehiculo.MicroRed === microred).length;
+    }
+
+    // SVG de ambulancia
+    const ambulanceSVG = `
+      <svg xmlns="http://www.w3.org/2000/svg" class="ambulance-svg" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
+        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+        <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+        <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
+        <path d="M5 17h-2v-11a1 1 0 0 1 1 -1h9v12m-4 0h6m4 0h2v-6h-8m0 -5h5l3 5" />
+        <path d="M6 10h4m-2 -2v4" />
+      </svg>
+    `;
+
+    // Función para cargar los cuadritos de MicroRedes
+    function cargarMicroRedes() {
+      const listaMicroRedes = document.getElementById('lista-microredes');
+      const microredesUnicas = obtenerMicroRedesUnicas();
+      
+      listaMicroRedes.innerHTML = '';
+      
+      if (microredesUnicas.length === 0) {
+        listaMicroRedes.innerHTML = '<p class="error">No se encontraron MicroRedes registradas.</p>';
+        return;
+      }
+      
+      microredesUnicas.forEach(microred => {
+        const totalVehiculos = contarVehiculosPorMicroRed(microred);
+        const card = document.createElement('div');
+        card.className = 'microred-card';
+        card.innerHTML = `
+          <div class="card-header">
+            ${ambulanceSVG}
+            <h3>${microred}</h3>
+          </div>
+          <p><strong>Total de ambulancias:</strong> ${totalVehiculos}</p>
+          <button class="ver-detalle" onclick="verDetalle('${microred}')">Ver ambulancias</button>
+        `;
+        listaMicroRedes.appendChild(card);
+      });
+    }
+
+    // Función para mostrar los detalles de una MicroRed
+    function verDetalle(microred) {
+      const vistaPrincipal = document.querySelector('.vista-principal');
+      const vistaDetalle = document.querySelector('.vista-detalle');
+      const contenidoDetalle = document.getElementById('contenido-detalle');
+      
+      // Encontrar todos los vehículos que pertenecen a esta MicroRed
+      const vehiculosDeMicroRed = datos.filter(v => v.MicroRed === microred);
+      
+      if (vehiculosDeMicroRed.length > 0) {
+        // Mostrar información detallada de los vehículos
+        let contenidoHTML = `
+          <div class="title">Ambulancias de la MicroRed: ${microred}</div>
+        `;
+        
+        vehiculosDeMicroRed.forEach((vehiculo, index) => {
+          const estadoClass = vehiculo.Estado.toLowerCase() === 'bueno' ? 'estado-bueno' : 
+                             vehiculo.Estado.toLowerCase() === 'regular' ? 'estado-regular' : 'estado-malo';
+          
+          contenidoHTML += `
+            <div class="vehiculo-container">
+              <div class="vehiculo-header">
+                ${ambulanceSVG}
+                Ambulancia ${index + 1} - ${vehiculo.Marca} ${vehiculo.Modelo}
+              </div>
+              
+              <div class="datos-con-imagen">
+  
+  <div class="datos-usuario">
+    <div class="info-row">
+      <div class="info-label">IPRESS:</div>
+      <div class="info-value">${vehiculo.Ipress}</div>
+    </div>
+    
+    <div class="info-row">
+      <div class="info-label">Estado:</div>
+      <div class="info-value"><span class="estado ${estadoClass}">${vehiculo.Estado}</span></div>
+    </div>
+    
+    <div class="info-row">
+      <div class="info-label">Placa:</div>
+      <div class="info-value">${vehiculo.Placa}</div>
+    </div>
+    
+    <div class="info-row">
+      <div class="info-label">Cód. Patrimono:</div>
+      <div class="info-value">${vehiculo["Codigo Patrimonial"]}</div>
+    </div>
+    
+    <div class="info-row">
+      <div class="info-label">Fabricación:</div>
+      <div class="info-value">${vehiculo["Año de Fabricacion"]}</div>
+    </div>
+    
+    <div class="info-row">
+      <div class="info-label">SOAT:</div>
+      <div class="info-value">${vehiculo.SOAT}</div>
+    </div>
+    
+    <div class="info-row">
+      <div class="info-label">Revisión Técnica:</div>
+      <div class="info-value">${vehiculo["Revision Tecnica"]}</div>
+    </div>
+  </div>
+
+  <div class="imagen-vehiculo">
+    <img src="ambulancia.png" alt="Imagen del vehículo">
+  </div>
+
+</div>
+
+
+              
+              
+              <div class="title" style="margin-top: 20px;">Datos del Conductor</div>
+              
+              <div class="datos-usuario">
+                <div class="info-row">
+                  <div class="info-label">Nombres:</div>
+                  <div class="info-value">${vehiculo["Nombres del Conductor"]}</div>
+                </div>
+                
+                <div class="info-row">
+                  <div class="info-label">DNI:</div>
+                  <div class="info-value">${vehiculo["DNI Conductor"]}</div>
+                </div>
+                
+                <div class="info-row">
+                  <div class="info-label">Contrato:</div>
+                  <div class="info-value">${vehiculo["Tipo de Contrato"]}</div>
+                </div>
+                
+                <div class="info-row">
+                  <div class="info-label">N° de Licencia:</div>
+                  <div class="info-value">${vehiculo["Nro de Licencia"]}</div>
+                </div>
+                
+                <div class="info-row">
+                  <div class="info-label">Fecha Venc:</div>
+                  <div class="info-value">${vehiculo["Fecha Vencimiento - Licencia"]}</div>
+                </div>
+                
+                <div class="info-row">
+                  <div class="info-label">Celular:</div>
+                  <div class="info-value">${vehiculo.Celular}</div>
+                </div>
+              </div>
+            </div>
+          `;
+        });
+        
+        contenidoDetalle.innerHTML = contenidoHTML;
+      } else {
+        contenidoDetalle.innerHTML = `<p class="error">No se encontraron ambulancias para la MicroRed: ${microred}</p>`;
+      }
+      
+      // Cambiar de vista
+      vistaPrincipal.style.display = 'none';
+      vistaDetalle.style.display = 'block';
+    }
+
+    // Función para volver al listado
+    function mostrarListado() {
+      const vistaPrincipal = document.querySelector('.vista-principal');
+      const vistaDetalle = document.querySelector('.vista-detalle');
+      
+      vistaDetalle.style.display = 'none';
+      vistaPrincipal.style.display = 'block';
+    }
+
+    // Función para filtrar MicroRedes
+    function filtrarMicroRedes() {
+      const textoBusqueda = document.getElementById('buscador').value.toLowerCase();
+      const listaMicroRedes = document.getElementById('lista-microredes');
+      const microredesUnicas = obtenerMicroRedesUnicas();
+      
+      listaMicroRedes.innerHTML = '';
+      
+      const resultadosFiltrados = microredesUnicas.filter(microred => 
+        microred.toLowerCase().includes(textoBusqueda)
+      );
+      
+      if (resultadosFiltrados.length === 0) {
+        listaMicroRedes.innerHTML = '<p class="error">No se encontraron resultados para la búsqueda.</p>';
+        return;
+      }
+      
+      resultadosFiltrados.forEach(microred => {
+        const totalVehiculos = contarVehiculosPorMicroRed(microred);
+        const card = document.createElement('div');
+        card.className = 'microred-card';
+        card.innerHTML = `
+          <div class="card-header">
+            ${ambulanceSVG}
+            <h3>${microred}</h3>
+          </div>
+          <p><strong>Total de ambulancias:</strong> ${totalVehiculos}</p>
+          <button class="ver-detalle" onclick="verDetalle('${microred}')">Ver ambulancias</button>
+        `;
+        listaMicroRedes.appendChild(card);
+      });
+    }
+
+    // Cargar las MicroRedes al iniciar la página
+    window.onload = function() {
+      cargarMicroRedes();
+    };
+  </script>
+</body>
+
+</html>
