@@ -5,406 +5,56 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="icon" type="image/png" href="logo_red2.jpg">
   <title>Ambulancias</title>
-  <style>
-    body {
-      font-family: Arial, sans-serif;
-      max-width: 900px;
-      margin: 0 auto;
-      padding: 20px;
-      background-color: #f5f5f5;
-    }
-    .container {
-      background-color: white;
-      border-radius: 8px;
-      padding: 25px;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-    }
-    .logo {
-      text-align: center;
-      margin-bottom: 20px;
-    }
-    .logo img {
-      max-width: 200px;
-      height: auto;
-    }
-    h1 {
-      color: #2c3e50;
-      text-align: center;
-      margin-bottom: 30px;
-      font-size: 24px;
-    }
-    .form-group {
-      margin-bottom: 20px;
-    }
-    label {
-      display: block;
-      margin-bottom: 5px;
-      font-weight: bold;
-    }
-    input[type="text"] {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      box-sizing: border-box;
-      font-size: 16px;
-    }
-    button {
-      background-color: #3498db;
-      color: white;
-      border: none;
-      padding: 10px 20px;
-      border-radius: 4px;
-      cursor: pointer;
-      font-size: 16px;
-      width: 100%;
-    }
-    button:hover {
-      background-color: #2980b9;
-    }
-    .error {
-      color: #e74c3c;
-      font-weight: bold;
-      text-align: center;
-    }
-    .datos-usuario {
-      line-height: 1.8;
-    }
-    .info-row {
-      margin-bottom: 10px;
-      display: flex;
-    }
-    .info-label {
-      font-weight: bold;
-      min-width: 130px;
-    }
-    .info-value {
-      flex: 1;
-    }
-    .header {
-      text-align: center;
-      margin-bottom: 10px;
-    }
-    .title {
-      background-color: #3498db;
-      color: white;
-      padding: 10px;
-      border-radius: 4px;
-      margin-bottom: 20px;
-      text-align: center;
-      font-weight: bold;
-    }
-    .pagos-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-    }
-    .pagos-table th, .pagos-table td {
-      border: 1px solid #ddd;
-      padding: 8px;
-      text-align: center;
-    }
-    .pagos-table th {
-      background-color: #f2f2f2;
-    }
-    .estado {
-      font-weight: bold;
-    }
-    .estado-bueno {
-      color: #27ae60;
-    }
-    .estado-regular {
-      color: #f39c12;
-    }
-    .estado-malo {
-      color: #e74c3c;
-    }
-    .error-message {
-      color: #e74c3c;
-      font-size: 13px;
-      margin-top: 5px;
-      display: none;
-    }
+  <link rel="stylesheet" href="styles.css">
+  
+  <!--     PARA GRAFICOS     -->
+  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 
-    /* Estilos para los cuadritos de microredes */
-    .microredes-list {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-      gap: 15px;
-      margin-top: 20px;
-    }
-    
-    .microred-card {
-      background-color: #fff;
-      border-radius: 6px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-      padding: 15px;
-      cursor: pointer;
-      transition: transform 0.2s, box-shadow 0.2s;
-      border-left: 4px solid #3498db;
-    }
-    
-    .microred-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 4px 12px rgba(0,0,0,0.15);
-    }
-    
-    .microred-card h3 {
-      margin: 0 0 10px 0;
-      color: #2c3e50;
-      font-size: 18px;
-    }
-    
-    .microred-card p {
-      margin: 5px 0;
-      color: #7f8c8d;
-    }
-    
-    .microred-card .ver-detalle {
-      background-color: #3498db;
-      color: white;
-      border: none;
-      padding: 8px 15px;
-      border-radius: 4px;
-      margin-top: 10px;
-      cursor: pointer;
-      font-size: 14px;
-      transition: background-color 0.2s;
-    }
-    
-    .microred-card .ver-detalle:hover {
-      background-color: #2980b9;
-    }
-    
-    /* Estilos para la vista detalle */
-    .vista-principal, .vista-detalle {
-      transition: opacity 0.3s ease-in-out;
-    }
-    
-    .vista-detalle {
-      display: none;
-    }
-    
-    .boton-volver {
-      background-color: #7f8c8d;
-      color: white;
-      border: none;
-      padding: 8px 15px;
-      border-radius: 4px;
-      margin-bottom: 15px;
-      cursor: pointer;
-      font-size: 14px;
-      display: inline-block;
-    }
-    
-    .boton-volver:hover {
-      background-color: #6c7a7d;
-    }
-    
-    /* Mejora la responsividad */
-    @media (max-width: 600px) {
-      body {
-        padding: 10px;
-      }
-      
-      .container {
-        padding: 15px;
-      }
-      
-      h1 {
-        font-size: 20px;
-      }
-      
-      .microredes-list {
-        grid-template-columns: 1fr;
-      }
-      
-      .info-row {
-        flex-direction: column;
-        margin-bottom: 15px;
-      }
-      
-      .info-label {
-        min-width: auto;
-        margin-bottom: 3px;
-      }
-      
-      .info-value {
-        word-break: break-word;
-      }
-      
-      .pagos-table {
-        font-size: 14px;
-      }
-      
-      .pagos-table th, .pagos-table td {
-        padding: 5px;
-      }
-      
-      .title {
-        font-size: 16px;
-        padding: 8px;
-      }
-    }
-
-    /* Asegura que los textos largos se ajusten */
-    .info-value {
-      overflow-wrap: break-word;
-      word-wrap: break-word;
-    }
-
-    /* Mejora la visualización de la tabla */
-    .pagos-table {
-      table-layout: fixed;
-    }
-    
-    /* Buscador */
-    .search-container {
-      margin-bottom: 20px;
-    }
-    
-    #buscador {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #ddd;
-      border-radius: 4px;
-      box-sizing: border-box;
-      font-size: 16px;
-      margin-bottom: 10px;
-    }
-
-    /* Estilos para vehículos */
-    .vehiculo-container {
-      border: 1px solid #e0e0e0;
-      border-radius: 6px;
-      padding: 15px;
-      margin-bottom: 20px;
-      background-color: #f9f9f9;
-    }
-    
-    .vehiculo-header {
-      font-size: 18px;
-      color: #3498db;
-      margin-bottom: 15px;
-      padding-bottom: 5px;
-      border-bottom: 1px solid #e0e0e0;
-    }
-    
-    .vehiculos-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 15px;
-    }
-    
-    .vehiculos-table th, .vehiculos-table td {
-      border: 1px solid #ddd;
-      padding: 10px;
-      text-align: left;
-    }
-    
-    .vehiculos-table th {
-      background-color: #f2f2f2;
-      font-weight: bold;
-    }
-    
-    .vehiculos-table tr:nth-child(even) {
-      background-color: #f9f9f9;
-    }
-    
-    .vehiculos-table tr:hover {
-      background-color: #f1f1f1;
-    }
-    
-    /* Estilo para el icono de ambulancia */
-    .ambulance-icon {
-      vertical-align: middle;
-      margin-right: 10px;
-      width: 24px;
-      height: 24px;
-    }
-    
-    /* Estilo para el encabezado con icono */
-    .card-header {
-      display: flex;
-      align-items: center;
-      margin-bottom: 10px;
-    }
-    
-    .card-header h3 {
-      margin: 0;
-    }
-    
-    .ambulance-svg {
-      fill: #3498db;
-      width: 24px;
-      height: 24px;
-      margin-right: 10px;
-    }
-
-
-    .datos-con-imagen {
-  display: flex;
-  align-items: flex-start;
-  justify-content: space-between;
-  gap: 20px;
-}
-
-.imagen-vehiculo img {
-  width: 350px;
-  height: auto;
-  border-radius: 8px;
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
-        object-fit: cover;
-}
-
-/* Responsive para pantalla pequeña */
-@media (max-width: 768px) {
-  .datos-con-imagen {
-    flex-direction: column-reverse;
-    align-items: flex-start; /* <- OJO, ya no center */
-  }
-
-  .imagen-vehiculo {
-    width: 100%;
-    display: flex;
-    justify-content: center; /* <- centramos solo la imagen */
-    margin-bottom: 10px;
-  }
-
-  .imagen-vehiculo img {
-    width: 100%;
-    max-width: 300px;
-  }
-}
-
-
-
-  </style>
 </head>
 
 <body>
-  <div class="container">
-    <div class="logo">
-      <img src="logo_red.jpg" alt="Logo Consulta MicroRedes">
-    </div>
+  
+<div class="container">
+  <div class="logo">
+    <img src="logo_red.jpg" alt="Logo Consulta MicroRedes">
+  </div>
+  
+  <div class="vista-principal">
+    <h1>Inventario de Ambulancias por MicroRed</h1>
     
-    <div class="vista-principal">
-      <h1>Sistema de Consulta de Ambulancias por MicroRed</h1>
-      
-      <div class="search-container">
-        <input type="text" id="buscador" placeholder="Buscar por MicroRed..." onkeyup="filtrarMicroRedes()">
+    <div class="top-bar">
+      <div class="ambulancias-total">
+        Total de Ambulancias: <span id="total-ambulancias">4</span>
       </div>
-      
-      <div class="microredes-list" id="lista-microredes">
-        <!-- Aquí se cargarán los cuadritos de MicroRedes -->
-      </div>
+      <button class="boton-modal" onclick="abrirModal()">Ver Detalles</button>
     </div>
-    
-    <div class="vista-detalle" id="detalle-microred">
-      <button class="boton-volver" onclick="mostrarListado()">← Volver al listado</button>
-      <div id="contenido-detalle"></div>
+  
+    <div class="search-container">
+      <input type="text" id="buscador" placeholder="Buscar por MicroRed..." onkeyup="filtrarMicroRedes()">
+    </div>
+  
+    <div class="microredes-list" id="lista-microredes">
+      <!-- Aquí se cargarán los cuadritos de MicroRedes -->
     </div>
   </div>
+  
+  <!-- Modal -->
+<div id="miModal" class="modal">
+  <div class="modal-contenido">
+    <span class="cerrar" onclick="cerrarModal()">&times;</span>
+    <img src="logo_red.jpg" alt="Logo de la Red" class="logo-modal">
+    <h3 style="text-align: center;">Ambulancias por MicroRed</h3>
+    <div id="columnchart_values" style="width: 100%; height: 300px;"></div>
+  </div>
+</div>
+  
+
+  
+  <div class="vista-detalle" id="detalle-microred">
+    <button class="boton-volver" onclick="mostrarListado()">← Volver al listado</button>
+    <div id="contenido-detalle"></div>
+  </div>
+</div>
 
   <script>
     // Datos de vehículos importados
@@ -444,31 +94,39 @@
 
     // Función para cargar los cuadritos de MicroRedes
     function cargarMicroRedes() {
-      const listaMicroRedes = document.getElementById('lista-microredes');
-      const microredesUnicas = obtenerMicroRedesUnicas();
-      
-      listaMicroRedes.innerHTML = '';
-      
-      if (microredesUnicas.length === 0) {
-        listaMicroRedes.innerHTML = '<p class="error">No se encontraron MicroRedes registradas.</p>';
-        return;
-      }
-      
-      microredesUnicas.forEach(microred => {
-        const totalVehiculos = contarVehiculosPorMicroRed(microred);
-        const card = document.createElement('div');
-        card.className = 'microred-card';
-        card.innerHTML = `
-          <div class="card-header">
-            ${ambulanceSVG}
-            <h3>${microred}</h3>
-          </div>
-          <p><strong>Total de ambulancias:</strong> ${totalVehiculos}</p>
-          <button class="ver-detalle" onclick="verDetalle('${microred}')">Ver ambulancias</button>
-        `;
-        listaMicroRedes.appendChild(card);
-      });
-    }
+  const listaMicroRedes = document.getElementById('lista-microredes');
+  const microredesUnicas = obtenerMicroRedesUnicas();
+  const totalAmbulancias = document.getElementById('total-ambulancias');
+  
+  listaMicroRedes.innerHTML = '';
+  
+  if (microredesUnicas.length === 0) {
+    listaMicroRedes.innerHTML = '<p class="error">No se encontraron MicroRedes registradas.</p>';
+    return;
+  }
+  
+  let total = 0; // Acumulador para contar el total de ambulancias
+  
+  microredesUnicas.forEach(microred => {
+    const totalVehiculos = contarVehiculosPorMicroRed(microred);
+    total += totalVehiculos; // Sumar el total de ambulancias por cada MicroRed
+    
+    const card = document.createElement('div');
+    card.className = 'microred-card';
+    card.innerHTML = `
+      <div class="card-header">
+        ${ambulanceSVG}
+        <h3>${microred}</h3>
+      </div>
+      <p><strong>Total de ambulancias:</strong> ${totalVehiculos}</p>
+      <button class="ver-detalle" onclick="verDetalle('${microred}')">Ver ambulancias</button>
+    `;
+    listaMicroRedes.appendChild(card);
+  });
+  
+  // Actualizar el total de ambulancias en el DOM
+  totalAmbulancias.textContent = total;
+}
 
     // Función para mostrar los detalles de una MicroRed
     function verDetalle(microred) {
@@ -515,7 +173,7 @@
     </div>
     
     <div class="info-row">
-      <div class="info-label">Cód. Patrimono:</div>
+      <div class="info-label">Cód. Patrimonio:</div>
       <div class="info-value">${vehiculo["Codigo Patrimonial"]}</div>
     </div>
     
@@ -637,7 +295,97 @@
     window.onload = function() {
       cargarMicroRedes();
     };
+
+
+
+    google.charts.load("current", {packages:['corechart']});
+  google.charts.setOnLoadCallback(drawChart);
+  
+  function drawChart() {
+  // Get the unique MicroRed names
+  const microredesUnicas = obtenerMicroRedesUnicas();
+  
+  // Create data array for the chart with headers
+  let chartData = [["MicroRed", "Cantidad", { role: "style" }]];
+  
+  // Define colors for each bar
+  const colors = ["#3366CC", "#DC3912", "#FF9900", "#109618", "#990099", "#0099C6", "#DD4477", "#66AA00"];
+  
+  // Add data for each MicroRed
+  microredesUnicas.forEach((microred, index) => {
+    const cantidadAmbulancia = contarVehiculosPorMicroRed(microred);
+    // Use colors[index % colors.length] to cycle through colors if there are more MicroReds than colors
+    chartData.push([microred, cantidadAmbulancia, colors[index % colors.length]]);
+  });
+  
+  var data = google.visualization.arrayToDataTable(chartData);
+
+  var view = new google.visualization.DataView(data);
+  view.setColumns([0, 1,
+                   { calc: "stringify",
+                     sourceColumn: 1,
+                     type: "string",
+                     role: "annotation" },
+                   2]);
+
+  var options = {
+    title: "--",
+    width: '100%',
+    height: 300,
+    bar: {groupWidth: "65%"},
+    legend: { position: "none" },
+    chartArea: {
+      width: '80%',
+      height: '70%'
+    },
+    hAxis: {
+      textStyle: {
+        fontSize: 12
+      }
+    },
+    vAxis: {
+      minValue: 0,
+      textStyle: {
+        fontSize: 12
+      }
+    },
+    backgroundColor: 'transparent'
+  };
+
+  var chart = new google.visualization.ColumnChart(document.getElementById("columnchart_values"));
+  
+  // Make chart responsive
+  function resizeChart() {
+    chart.draw(view, options);
+  }
+  
+  // Initial draw
+  resizeChart();
+  
+  // Redraw chart when window is resized
+  window.addEventListener('resize', resizeChart);
+}
+  
+  // Function to open and close modal
+  function abrirModal() {
+    document.getElementById("miModal").style.display = "block";
+    // Redraw chart when modal opens to ensure proper sizing
+    google.charts.setOnLoadCallback(drawChart);
+  }
+  
+  function cerrarModal() {
+    document.getElementById("miModal").style.display = "none";
+  }
+  
+  // Close modal when clicking outside of it
+  window.onclick = function(event) {
+    var modal = document.getElementById("miModal");
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  }
   </script>
+
 </body>
 
 </html>
