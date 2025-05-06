@@ -119,6 +119,12 @@ button:hover {
   display: none;
 }
 
+.texto-rojo {
+  color: red;
+  font-weight: bold;
+}
+
+
 /* Estilos para los cuadritos de microredes */
 .microredes-list {
   display: grid;
@@ -403,7 +409,41 @@ button:hover {
   }
   
   .boton-modal:hover {
-    background-color: #523500;
+    background-color: #aa6f00;
+  }
+
+  .boton-estado {
+    background-color: #8a0303;
+    color: white;
+    border: none;
+    padding: 8px 15px; /* Smaller padding */
+    border-radius: 4px; /* Smaller border radius */
+    cursor: pointer;
+    font-size: 14px; /* Smaller font */
+    /* Make the button smaller */
+    width: auto;
+    min-width: 100px;
+  }
+  
+  .boton-estado:hover {
+    background-color: #520000;
+  }
+
+  .boton-detalles {
+    background-color: #006446;
+    color: white;
+    border: none;
+    padding: 8px 15px; /* Smaller padding */
+    border-radius: 4px; /* Smaller border radius */
+    cursor: pointer;
+    font-size: 14px; /* Smaller font */
+    /* Make the button smaller */
+    width: auto;
+    min-width: 100px;
+  }
+  
+  .boton-detalles:hover {
+    background-color: #03362e;
   }
   
   /* For mobile devices, stack the elements */
@@ -418,6 +458,14 @@ button:hover {
     }
     
     .boton-modal {
+      width: 100%; /* Full width on mobile */
+    }
+
+    .boton-estado {
+      width: 100%; /* Full width on mobile */
+    }
+
+    .boton-detalles {
       width: 100%; /* Full width on mobile */
     }
   }
@@ -445,6 +493,9 @@ button:hover {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0,0,0,0.2);
   }
+
+
+
   
   .cerrar {
     color: #aaa;
@@ -497,3 +548,58 @@ button:hover {
       max-width: 80px;
     }
   }
+
+
+
+  /* Agregar estos estilos a tu archivo CSS existente */
+
+/* Estilos para la vista de detalles general */
+.vista-detalles-general {
+  background-color: #f5f5f5;
+  border-radius: 10px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+  margin-top: 20px;
+  display: none;
+}
+
+.detalles-general-container {
+  width: 100%;
+}
+
+.detalles-general-container h2 {
+  text-align: center;
+  color: #0f802b;
+  margin-bottom: 30px;
+  font-size: 24px;
+}
+
+.section-title {
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 15px;
+  margin-bottom: 20px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.section-title:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.section-title h3 {
+  color: #2a6496;
+  margin: 0;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+}
+
+.section-title h3::before {
+  content: '►';
+  margin-right: 10px;
+  color: #2a6496;
+  font-size: 14px;
+}
