@@ -1,0 +1,630 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="logo_red2.jpg" />
+    <title>Gestión de Ambulancias</title>
+    <link rel="stylesheet" href="style_detalle.css" />
+  </head>
+  <body>
+    <div class="container">
+      <div class="vista-detalles-general" id="vista-detalles-general">
+        <div class="logo">
+          <img src="logo_red.jpg" alt="Logo Consulta MicroRedes" />
+        </div>
+
+        <div class="detalles-general-container">
+          <h2>Detalles Generales - Ambulancias MicroRedes</h2>
+          <button
+            class="boton-volver"
+            onclick="window.location.href='index.html'"
+          >
+            ← Volver al listado
+          </button>
+
+          <!-- Panel 1: Resumen de Ambulancias -->
+          <div class="section-title" onclick="toggleSection(this)">
+            <h3>Resumen de Ambulancias</h3>
+            <div class="section-content">
+              <div class="stats-container">
+                <div class="stat-card">
+                  <h4>Total de Ambulancias</h4>
+                  <div class="stat-value" id="total-ambulancias">4</div>
+                </div>
+                <div class="stat-card disponible">
+                  <h4>Estado Bueno</h4>
+                  <div class="stat-value" id="ambulancias-buenas">2</div>
+                </div>
+                <div class="stat-card en-servicio">
+                  <h4>Estado Regular</h4>
+                  <div class="stat-value" id="ambulancias-regulares">2</div>
+                </div>
+                <div class="stat-card inoperativa">
+                  <h4>Estado Malo</h4>
+                  <div class="stat-value" id="ambulancias-malas">0</div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Panel 2: Estado de Ambulancias -->
+          <div class="section-title" onclick="toggleSection(this)">
+            <h3>Estado de Ambulancias</h3>
+            <div class="section-content">
+              <div class="table-responsive">
+                <table id="tabla-ambulancias">
+                  <thead>
+                    <tr>
+                      <th>MicroRed</th>
+                      <th>IPRESS</th>
+                      <th>Marca/Modelo</th>
+                      <th>Placa</th>
+                      <th>Estado</th>
+                      <th>Vencimiento SOAT</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>Leymebamba</td>
+                      <td>CENTRO DE SALUD CHUQUIBAMBA</td>
+                      <td>TOYOTA HILUX</td>
+                      <td>EUH-640</td>
+                      <td><span class="success">Bueno</span></td>
+                      <td>25/02/2026</td>
+                    </tr>
+                    <tr>
+                      <td>Santo Tomas</td>
+                      <td>CENTRO DE SALUD SANTO TOMAS</td>
+                      <td>TOYOTA HILUX</td>
+                      <td>EUH-414</td>
+                      <td><span class="success">Bueno</span></td>
+                      <td>03/07/2025</td>
+                    </tr>
+                    <tr>
+                      <td>Santo Tomas</td>
+                      <td>CENTRO DE SALUD SANTO TOMAS</td>
+                      <td>VOLKSWAGEN TRANSPORTER</td>
+                      <td>EUC-982</td>
+                      <td><span class="warning">Regular</span></td>
+                      <td>24/01/2026</td>
+                    </tr>
+                    <tr>
+                      <td>Maria</td>
+                      <td>CENTRO DE SALUD COCABAMBA</td>
+                      <td>TOYOTA HILUX</td>
+                      <td>EUD-362</td>
+                      <td><span class="warning">Regular</span></td>
+                      <td>23/04/2026</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Panel 3: Conductores -->
+          <div class="section-title" onclick="toggleSection(this)">
+            <h3>Conductores</h3>
+            <div class="section-content">
+              <div class="stats-container">
+                <div class="stat-card">
+                  <h4>Total Conductores</h4>
+                  <div class="stat-value">3</div>
+                </div>
+                <div class="stat-card disponible">
+                  <h4>Activos</h4>
+                  <div class="stat-value">3</div>
+                </div>
+                <div class="stat-card inoperativa">
+                  <h4>Sin Conductor</h4>
+                  <div class="stat-value">1</div>
+                </div>
+              </div>
+              <div class="table-responsive" style="margin-top: 20px">
+                <table id="tabla-conductores">
+                  <thead>
+                    <tr>
+                      <th>Nombre</th>
+                      <th>DNI</th>
+                      <th>MicroRed</th>
+                      <th>Tipo de Contrato</th>
+                      <th>Nro. Licencia</th>
+                      <th>Vencimiento Licencia</th>
+                      <th>Contacto</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>HANS MIKKEL ABANTO VALDIVIA</td>
+                      <td>44426318</td>
+                      <td>Leymebamba</td>
+                      <td>Nombrado</td>
+                      <td>W44426318</td>
+                      <td>30/01/2026</td>
+                      <td>966112950</td>
+                    </tr>
+                    <tr>
+                      <td>ROGER JULCA RITUAY</td>
+                      <td>42473516</td>
+                      <td>Santo Tomas</td>
+                      <td>Contrato CAS</td>
+                      <td>W42473516</td>
+                      <td>24/11/2026</td>
+                      <td>962881400</td>
+                    </tr>
+                    <tr>
+                      <td>ELVIS PIZARRO SOLIS</td>
+                      <td>43242257</td>
+                      <td>Santo Tomas</td>
+                      <td>Contrato CAS</td>
+                      <td>Q43242257</td>
+                      <td>25/07/2025</td>
+                      <td>950967863</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+
+          <!-- Panel 4: Documentación -->
+          <div class="section-title" onclick="toggleSection(this)">
+            <h3>Documentación</h3>
+            <div class="section-content">
+              <div class="info-card">
+                <h4>Estado de Documentación</h4>
+                <div class="stats-container">
+                  <div class="stat-card">
+                    <h4>SOAT Vigentes</h4>
+                    <div class="stat-value">4/4</div>
+                    <div class="progress-bar-container">
+                      <div
+                        class="progress-bar success"
+                        style="width: 100%; background-color: #27ae60"
+                      ></div>
+                    </div>
+                  </div>
+                  <div class="stat-card">
+                    <h4>Revisiones Técnicas</h4>
+                    <div class="stat-value">2/4</div>
+                    <div class="progress-bar-container">
+                      <div
+                        class="progress-bar warning"
+                        style="width: 50%; background-color: #e67e22"
+                      ></div>
+                    </div>
+                  </div>
+                  <div class="stat-card">
+                    <h4>Licencias Conductores</h4>
+                    <div class="stat-value">3/3</div>
+                    <div class="progress-bar-container">
+                      <div
+                        class="progress-bar success"
+                        style="width: 100%; background-color: #27ae60"
+                      ></div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div class="info-card" style="margin-top: 20px">
+                <h4>Próximos Vencimientos</h4>
+                <ul class="listado-simple">
+                  <li>
+                    <strong>EUH-414 (TOYOTA HILUX):</strong> SOAT y Revisión Técnica - Vence:
+                    03/07/2025 (58 días)
+                  </li>
+                  <li>
+                    <strong>Q43242257 (ELVIS PIZARRO):</strong> Licencia de Conducir - Vence:
+                    25/07/2025 (80 días)
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>
+
+          <!-- Panel 5: Distribución por MicroRed -->
+          <div class="section-title" onclick="toggleSection(this)">
+            <h3>Distribución por MicroRed</h3>
+            <div class="section-content">
+              <div class="info-card">
+                <h4>Ambulancias por MicroRed</h4>
+                <div class="stats-container">
+                  <div class="stat-card">
+                    <h4>Leymebamba</h4>
+                    <div class="stat-value">1</div>
+                    <div class="stat-detail">Estado: Bueno</div>
+                  </div>
+                  <div class="stat-card">
+                    <h4>Santo Tomas</h4>
+                    <div class="stat-value">2</div>
+                    <div class="stat-detail">1 Bueno, 1 Regular</div>
+                  </div>
+                  <div class="stat-card">
+                    <h4>Maria</h4>
+                    <div class="stat-value">1</div>
+                    <div class="stat-detail">Estado: Regular</div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          
+          <!-- Panel 6: Vehículos sin Conductores --><!--
+          <div class="section-title" onclick="toggleSection(this)">
+            <h3>Vehículos sin Conductores</h3>
+            <div class="section-content">
+              <div class="info-card">
+                <h4>Ambulancias sin conductor asignado</h4>
+                <ul class="listado-simple">
+                  <li>
+                    <strong>TOYOTA HILUX (EUD-362)</strong> - Centro de Salud Cocabamba<br />
+                    MicroRed: MariaAA<br />
+                    Estado: Regular<br />
+                    <span class="danger">Se requiere asignar conductor</span>
+                  </li>
+                </ul>
+              </div>
+            </div>
+          </div>-->
+        </div>
+      </div>
+    </div>
+
+    <script>
+// Función para calcular días restantes
+function calcularDiasRestantes(fechaVencimiento) {
+  if (!fechaVencimiento || fechaVencimiento === "1/1/0001" || fechaVencimiento === "00/01/1900") {
+    return null;
+  }
+  
+  const partes = fechaVencimiento.split('/');
+  const fecha = new Date(partes[2], partes[1] - 1, partes[0]);
+  const hoy = new Date();
+  
+  const diferencia = fecha - hoy;
+  return Math.ceil(diferencia / (1000 * 60 * 60 * 24));
+}
+
+// Función para actualizar la interfaz con los datos dinámicos
+document.addEventListener('DOMContentLoaded', function() {
+  // Contar ambulancias por estado
+  const conteoAmbulanciasPorEstado = datos.reduce((acumulador, item) => {
+    acumulador.total++;
+    acumulador[item.Estado]++;
+    return acumulador;
+  }, { total: 0, Bueno: 0, Regular: 0, Malo: 0 });
+  
+  // Actualizar contadores en la interfaz
+  document.getElementById('total-ambulancias').textContent = conteoAmbulanciasPorEstado.total;
+  document.getElementById('ambulancias-buenas').textContent = conteoAmbulanciasPorEstado.Bueno;
+  document.getElementById('ambulancias-regulares').textContent = conteoAmbulanciasPorEstado.Regular;
+  document.getElementById('ambulancias-malas').textContent = conteoAmbulanciasPorEstado.Malo;
+  
+  // Contar conductores
+  const conductores = datos.filter(item => item["DNI Conductor"] !== "NO CUENTA" && item["Nombres del Conductor"] !== "NO CUENTA").length;
+  const sinConductor = datos.filter(item => item["DNI Conductor"] === "NO CUENTA" || item["Nombres del Conductor"] === "NO CUENTA").length;
+  
+  // Actualizar contadores de conductores en la interfaz
+  const statConductores = document.querySelectorAll('.section-title:nth-of-type(3) .stat-value');
+  if(statConductores.length >= 3) {
+    statConductores[0].textContent = conductores;
+    statConductores[1].textContent = conductores;
+    statConductores[2].textContent = sinConductor;
+  }
+  
+  // Generar tabla de ambulancias dinámicamente
+  generarTablaAmbulancia();
+  
+  // Generar tabla de conductores dinámicamente
+  generarTablaConductores();
+  
+  // Actualizar sección de documentación
+  actualizarDocumentacion();
+  
+  // Actualizar distribución por MicroRed
+  actualizarDistribucionMicroRed();
+  
+  // Actualizar vehículos sin conductores
+  actualizarVehiculosSinConductor();
+  
+  // Función para expandir/colapsar secciones
+  const secciones = document.querySelectorAll('.section-title');
+  secciones.forEach(seccion => {
+    seccion.addEventListener('click', function() {
+      toggleSection(this);
+    });
+  });
+});
+
+// Función para generar tabla de ambulancias
+function generarTablaAmbulancia() {
+  const tabla = document.getElementById('tabla-ambulancias');
+  const tbody = tabla.querySelector('tbody');
+  
+  // Limpiar tabla
+  tbody.innerHTML = '';
+  
+  // Generar filas
+  datos.forEach(item => {
+    const fila = document.createElement('tr');
+    
+    // Definir clase para estado
+    let claseEstado = 'warning';
+    if (item.Estado === 'Bueno') claseEstado = 'success';
+    if (item.Estado === 'Malo') claseEstado = 'danger';
+    
+    fila.innerHTML = `
+      <td>${item.MicroRed}</td>
+      <td>${item.Ipress}</td>
+      <td>${item.Marca} ${item.Modelo}</td>
+      <td>${item.Placa}</td>
+      <td><span class="${claseEstado}">${item.Estado}</span></td>
+      <td>${item.SOAT}</td>
+    `;
+    
+    tbody.appendChild(fila);
+  });
+}
+
+// Función para generar tabla de conductores
+function generarTablaConductores() {
+  const tabla = document.getElementById('tabla-conductores');
+  const tbody = tabla.querySelector('tbody');
+  
+  // Limpiar tabla
+  tbody.innerHTML = '';
+  
+  // Generar filas
+  datos.forEach(item => {
+    if (item["DNI Conductor"] !== "NO CUENTA" && item["Nombres del Conductor"] !== "NO CUENTA") {
+      const fila = document.createElement('tr');
+      
+      fila.innerHTML = `
+        <td>${item["Nombres del Conductor"]}</td>
+        <td>${item["DNI Conductor"]}</td>
+        <td>${item.MicroRed}</td>
+        <td>${item["Tipo de Contrato"]}</td>
+        <td>${item["Nro de Licencia"]}</td>
+        <td>${item["Fecha Vencimiento - Licencia"]}</td>
+        <td>${item.Celular}</td>
+      `;
+      
+      tbody.appendChild(fila);
+    }
+  });
+}
+
+// Función para actualizar la sección de documentación
+function actualizarDocumentacion() {
+  // Contar documentos vigentes
+  const totalVehiculos = datos.length;
+  const soatVigentes = datos.filter(item => item.SOAT && item.SOAT !== "00/01/1900" && calcularDiasRestantes(item.SOAT) > 0).length;
+  const revisionesVigentes = datos.filter(item => item["Revision Tecnica"] && item["Revision Tecnica"] !== "00/01/1900" && calcularDiasRestantes(item["Revision Tecnica"]) > 0).length;
+  
+  // Contar licencias vigentes
+  const totalConductores = datos.filter(item => item["DNI Conductor"] !== "NO CUENTA").length;
+  const licenciasVigentes = datos.filter(item => 
+    item["DNI Conductor"] !== "NO CUENTA" && 
+    item["Fecha Vencimiento - Licencia"] && 
+    item["Fecha Vencimiento - Licencia"] !== "00/01/1900" && 
+    calcularDiasRestantes(item["Fecha Vencimiento - Licencia"]) > 0
+  ).length;
+  
+  // Actualizar estadísticas de documentación
+  const seccionDocumentacion = document.querySelector('.section-title:nth-of-type(4) .section-content');
+  if (seccionDocumentacion) {
+    const statCards = seccionDocumentacion.querySelectorAll('.stat-value');
+    const progressBars = seccionDocumentacion.querySelectorAll('.progress-bar');
+    
+    if (statCards.length >= 3 && progressBars.length >= 3) {
+      // Actualizar SOAT
+      statCards[0].textContent = `${soatVigentes}/${totalVehiculos}`;
+      progressBars[0].style.width = `${(soatVigentes / totalVehiculos) * 100}%`;
+      if (soatVigentes / totalVehiculos < 0.7) {
+        progressBars[0].classList.remove('success');
+        progressBars[0].classList.add('warning');
+        progressBars[0].style.backgroundColor = '#e67e22';
+      }
+      
+      // Actualizar Revisiones Técnicas
+      statCards[1].textContent = `${revisionesVigentes}/${totalVehiculos}`;
+      progressBars[1].style.width = `${(revisionesVigentes / totalVehiculos) * 100}%`;
+      
+      // Actualizar Licencias
+      statCards[2].textContent = `${licenciasVigentes}/${totalConductores}`;
+      progressBars[2].style.width = `${(licenciasVigentes / totalConductores) * 100}%`;
+      if (licenciasVigentes / totalConductores < 1) {
+        progressBars[2].classList.remove('success');
+        progressBars[2].classList.add('warning');
+        progressBars[2].style.backgroundColor = '#e67e22';
+      }
+    }
+  }
+  
+  // Generar próximos vencimientos
+  generarProximosVencimientos();
+}
+
+// Función para generar próximos vencimientos
+function generarProximosVencimientos() {
+  const listaVencimientos = document.querySelector('.section-title:nth-of-type(4) .listado-simple');
+  if (!listaVencimientos) return;
+  
+  // Limpiar lista
+  listaVencimientos.innerHTML = '';
+  
+  // Obtener próximos vencimientos (próximos 90 días)
+  const proximosVencimientos = [];
+  
+  // Verificar SOAT
+  datos.forEach(item => {
+    const diasSOAT = calcularDiasRestantes(item.SOAT);
+    if (diasSOAT !== null && diasSOAT >= 0 && diasSOAT <= 90) {
+      proximosVencimientos.push({
+        tipo: 'SOAT',
+        vehiculo: `${item.Placa} (${item.Marca} ${item.Modelo})`,
+        fecha: item.SOAT,
+        dias: diasSOAT
+      });
+    }
+    
+    // Verificar Revisión Técnica
+    const diasRevision = calcularDiasRestantes(item["Revision Tecnica"]);
+    if (diasRevision !== null && diasRevision >= 0 && diasRevision <= 90) {
+      proximosVencimientos.push({
+        tipo: 'Revisión Técnica',
+        vehiculo: `${item.Placa} (${item.Marca} ${item.Modelo})`,
+        fecha: item["Revision Tecnica"],
+        dias: diasRevision
+      });
+    }
+    
+    // Verificar Licencia de Conductor
+    if (item["DNI Conductor"] !== "NO CUENTA") {
+      const diasLicencia = calcularDiasRestantes(item["Fecha Vencimiento - Licencia"]);
+      if (diasLicencia !== null && diasLicencia >= 0 && diasLicencia <= 90) {
+        proximosVencimientos.push({
+          tipo: 'Licencia de Conducir',
+          conductor: `${item["Nro de Licencia"]} (${item["Nombres del Conductor"]})`,
+          fecha: item["Fecha Vencimiento - Licencia"],
+          dias: diasLicencia
+        });
+      }
+    }
+  });
+  
+  // Ordenar por días restantes (ascendente)
+  proximosVencimientos.sort((a, b) => a.dias - b.dias);
+  
+  // Generar elementos de la lista
+  proximosVencimientos.forEach(item => {
+    const li = document.createElement('li');
+    
+    if (item.vehiculo) {
+      li.innerHTML = `<strong>${item.vehiculo}:</strong> ${item.tipo} - Vence: ${item.fecha} (${item.dias} días)`;
+    } else {
+      li.innerHTML = `<strong>${item.conductor}:</strong> ${item.tipo} - Vence: ${item.fecha} (${item.dias} días)`;
+    }
+    
+    listaVencimientos.appendChild(li);
+  });
+  
+  // Si no hay próximos vencimientos
+  if (proximosVencimientos.length === 0) {
+    const li = document.createElement('li');
+    li.textContent = 'No hay vencimientos próximos en los siguientes 90 días.';
+    listaVencimientos.appendChild(li);
+  }
+}
+
+// Función para actualizar distribución por MicroRed
+function actualizarDistribucionMicroRed() {
+  // Agrupar ambulancias por MicroRed
+  const distribucionPorMicroRed = {};
+  
+  datos.forEach(item => {
+    if (!distribucionPorMicroRed[item.MicroRed]) {
+      distribucionPorMicroRed[item.MicroRed] = {
+        total: 0,
+        bueno: 0,
+        regular: 0,
+        malo: 0
+      };
+    }
+    
+    distribucionPorMicroRed[item.MicroRed].total++;
+    
+    if (item.Estado === 'Bueno') distribucionPorMicroRed[item.MicroRed].bueno++;
+    else if (item.Estado === 'Regular') distribucionPorMicroRed[item.MicroRed].regular++;
+    else if (item.Estado === 'Malo') distribucionPorMicroRed[item.MicroRed].malo++;
+  });
+  
+  // Actualizar la interfaz
+  const seccionDistribucion = document.querySelector('.section-title:nth-of-type(5) .stats-container');
+  if (!seccionDistribucion) return;
+  
+  // Limpiar contenedor
+  seccionDistribucion.innerHTML = '';
+  
+  // Crear tarjetas para cada MicroRed
+  Object.keys(distribucionPorMicroRed).forEach(microRed => {
+    const datos = distribucionPorMicroRed[microRed];
+    const div = document.createElement('div');
+    div.className = 'stat-card';
+    
+    let estadoDetalle = '';
+    if (datos.bueno > 0) estadoDetalle += `${datos.bueno} Bueno`;
+    if (datos.regular > 0) estadoDetalle += (estadoDetalle ? ', ' : '') + `${datos.regular} Regular`;
+    if (datos.malo > 0) estadoDetalle += (estadoDetalle ? ', ' : '') + `${datos.malo} Malo`;
+    
+    div.innerHTML = `
+      <h4>${microRed}</h4>
+      <div class="stat-value">${datos.total}</div>
+      <div class="stat-detail">${estadoDetalle}</div>
+    `;
+    
+    seccionDistribucion.appendChild(div);
+  });
+}
+
+
+/*
+// Función para actualizar vehículos sin conductores
+function actualizarVehiculosSinConductor() {
+  const listaVehiculosSinConductor = document.querySelector('.section-title:nth-of-type(6) .listado-simple');
+  if (!listaVehiculosSinConductor) return;
+  
+  // Limpiar lista
+  listaVehiculosSinConductor.innerHTML = '';
+  
+  // Filtrar vehículos sin conductor
+  const vehiculosSinConductor = datos.filter(item => 
+    item["DNI Conductor"] === "NO CUENTA" || 
+    item["Nombres del Conductor"] === "NO CUENTA"
+  );
+  
+  // Generar elementos de la lista
+  vehiculosSinConductor.forEach(item => {
+    const li = document.createElement('li');
+    
+    li.innerHTML = `
+      <strong>${item.Marca} ${item.Modelo} (${item.Placa})</strong> - ${item.Ipress}<br />
+      MicroRed: ${item.MicroRed}<br />
+      Estado: ${item.Estado}<br />
+      <span class="danger">Se requiere asignar conductor</span>
+    `;
+    
+    listaVehiculosSinConductor.appendChild(li);
+  });
+  
+  // Si no hay vehículos sin conductor
+  if (vehiculosSinConductor.length === 0) {
+    const li = document.createElement('li');
+    li.textContent = 'Todas las ambulancias tienen conductor asignado.';
+    listaVehiculosSinConductor.appendChild(li);
+  }
+}
+*/
+
+
+
+
+
+
+
+// Función para expandir/colapsar secciones
+function toggleSection(element) {
+  const content = element.querySelector('.section-content');
+  if (content) {
+    content.classList.toggle('active');
+    element.classList.toggle('active');
+  }
+}
+
+
+    </script>
+    <script type="text/javascript" src="procesos.js"></script>
+  </body>
+</html>
