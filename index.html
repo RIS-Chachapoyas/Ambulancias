@@ -1,391 +1,123 @@
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <link rel="icon" type="image/png" href="logo_red2.jpg">
-  <title>Ambulancias</title>
-  <link rel="stylesheet" href="styles.css">
-  
-  <!--     PARA GRAFICOS     -->
-  <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/png" href="logo_red2.jpg" />
+    <title>Ambulancias</title>
+    <link rel="stylesheet" href="styles.css" />
 
-</head>
+    <!--     PARA GRAFICOS     -->
+    <script
+      type="text/javascript"
+      src="https://www.gstatic.com/charts/loader.js"
+    ></script>
+  </head>
 
-<body>
-  
-<div class="container">
-  <div class="logo">
-    <img src="logo_red.jpg" alt="Logo Consulta MicroRedes">
-  </div>
-  
-  <div class="vista-principal">
-    <h1>Inventario de Ambulancias por MicroRed</h1>
-    
-    <div class="top-bar">
-      <div class="ambulancias-total">
-        Total de Ambulancias: <span id="total-ambulancias">4</span>
+  <body>
+    <div class="container">
+      <div class="logo">
+        <img src="logo_red.jpg" alt="Logo Consulta MicroRedes" />
       </div>
-      <button class="boton-modal" onclick="abrirModal()">Ver Detalles</button>
-    </div>
-  
-    <div class="search-container">
-      <input type="text" id="buscador" placeholder="Buscar por MicroRed..." onkeyup="filtrarMicroRedes()">
-    </div>
-  
-    <div class="microredes-list" id="lista-microredes">
-      <!-- Aquí se cargarán los cuadritos de MicroRedes -->
-    </div>
-  </div>
-  
-  <!-- Modal -->
-<div id="miModal" class="modal">
-  <div class="modal-contenido">
-    <span class="cerrar" onclick="cerrarModal()">&times;</span>
-    <img src="logo_red.jpg" alt="Logo de la Red" class="logo-modal">
-    <h3 style="text-align: center;">Ambulancias por MicroRed</h3>
-    <div id="columnchart_values" style="width: 100%; height: 300px;"></div>
-  </div>
-</div>
-  
 
-  
-  <div class="vista-detalle" id="detalle-microred">
-    <button class="boton-volver" onclick="mostrarListado()">← Volver al listado</button>
-    <div id="contenido-detalle"></div>
-  </div>
-</div>
+      <div class="vista-principal">
+        <h1>Inventario de Ambulancias por MicroRed</h1>
 
-  <script>
-    // Datos de vehículos importados
-    const datos = [
-    {"MicroRed": "Leymebamba", "Ipress": "CENTRO DE SALUD CHUQUIBAMBA", "Estado": "Bueno", "Marca": "TOYOTA", "Modelo": "HILUX", "Codigo Patrimonial": "678200500015", "Placa": "EUH-640", "Año de Fabricacion": "2023", "SOAT": "46078", "Revision Tecnica": "1/1/0001", "DNI Conductor": "44426318", "Nombres del Conductor": "HANS MIKKEL ABANTO VALDIVIA", "Tipo de Contrato": "Nombrado", "Licencia": "https://drive.google.com/open?id=1nH2pT6Qd3wZmgfNI8gFC2kgMgmogXckh", "Nro de Licencia": "W44426318", "Fecha Vencimiento - Licencia": "46052", "Celular": "966112950" },
-    {"MicroRed": "Santo Tomas", "Ipress": "CENTRO DE SALUD SANTO TOMAS", "Estado": "Bueno", "Marca": "TOYOTA", "Modelo": "HILUX", "Codigo Patrimonial": "NO TIENE", "Placa": "EUH-414", "Año de Fabricacion": "2019", "SOAT": "45841", "Revision Tecnica": "45841", "DNI Conductor": "42473516", "Nombres del Conductor": "ROGER JULCA RITUAY", "Tipo de Contrato": "Contrato CAS", "Licencia": "", "Nro de Licencia": "W42473516", "Fecha Vencimiento - Licencia": "46350", "Celular": "962881400" },
-    {"MicroRed": "Santo Tomas", "Ipress": "CENTRO DE SALUD SANTO TOMAS", "Estado": "Regular", "Marca": "VOLKSWAGEN", "Modelo": "TRANSPORTER", "Codigo Patrimonial": "NO TIENE", "Placa": "EUC-982", "Año de Fabricacion": "2013", "SOAT": "46046", "Revision Tecnica": "45932", "DNI Conductor": "43242257", "Nombres del Conductor": "ELVIS PIZARRO SOLIS", "Tipo de Contrato": "Contrato CAS", "Licencia": "", "Nro de Licencia": "Q43242257", "Fecha Vencimiento - Licencia": "45863", "Celular": "950967863" },
-    {"MicroRed": "Maria", "Ipress": "CENTRO DE SALUD COCABAMBA", "Estado": "Regular", "Marca": "TOYOTA", "Modelo": "HILUX", "Codigo Patrimonial": "678200500008", "Placa": "EUD-362", "Año de Fabricacion": "1995", "SOAT": "46135", "Revision Tecnica": "45955", "DNI Conductor": "NO CUENTA", "Nombres del Conductor": "NO CUENTA", "Tipo de Contrato": "NO CUENTA", "Licencia": "", "Nro de Licencia": "", "Fecha Vencimiento - Licencia": "", "Celular": "" }
-    ];
-
-    // Función para obtener MicroRedes únicas
-    function obtenerMicroRedesUnicas() {
-      const microredesUnicas = new Set();
-      
-      datos.forEach(vehiculo => {
-        microredesUnicas.add(vehiculo.MicroRed);
-      });
-      
-      return Array.from(microredesUnicas).sort();
-    }
-
-    // Función para contar vehículos por MicroRed
-    function contarVehiculosPorMicroRed(microred) {
-      return datos.filter(vehiculo => vehiculo.MicroRed === microred).length;
-    }
-
-    // SVG de ambulancia
-    const ambulanceSVG = `
-      <svg xmlns="http://www.w3.org/2000/svg" class="ambulance-svg" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round">
-        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-        <path d="M7 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-        <path d="M17 17m-2 0a2 2 0 1 0 4 0a2 2 0 1 0 -4 0" />
-        <path d="M5 17h-2v-11a1 1 0 0 1 1 -1h9v12m-4 0h6m4 0h2v-6h-8m0 -5h5l3 5" />
-        <path d="M6 10h4m-2 -2v4" />
-      </svg>
-    `;
-
-    // Función para cargar los cuadritos de MicroRedes
-    function cargarMicroRedes() {
-  const listaMicroRedes = document.getElementById('lista-microredes');
-  const microredesUnicas = obtenerMicroRedesUnicas();
-  const totalAmbulancias = document.getElementById('total-ambulancias');
-  
-  listaMicroRedes.innerHTML = '';
-  
-  if (microredesUnicas.length === 0) {
-    listaMicroRedes.innerHTML = '<p class="error">No se encontraron MicroRedes registradas.</p>';
-    return;
-  }
-  
-  let total = 0; // Acumulador para contar el total de ambulancias
-  
-  microredesUnicas.forEach(microred => {
-    const totalVehiculos = contarVehiculosPorMicroRed(microred);
-    total += totalVehiculos; // Sumar el total de ambulancias por cada MicroRed
-    
-    const card = document.createElement('div');
-    card.className = 'microred-card';
-    card.innerHTML = `
-      <div class="card-header">
-        ${ambulanceSVG}
-        <h3>${microred}</h3>
-      </div>
-      <p><strong>Total de ambulancias:</strong> ${totalVehiculos}</p>
-      <button class="ver-detalle" onclick="verDetalle('${microred}')">Ver ambulancias</button>
-    `;
-    listaMicroRedes.appendChild(card);
-  });
-  
-  // Actualizar el total de ambulancias en el DOM
-  totalAmbulancias.textContent = total;
-}
-
-    // Función para mostrar los detalles de una MicroRed
-    function verDetalle(microred) {
-      const vistaPrincipal = document.querySelector('.vista-principal');
-      const vistaDetalle = document.querySelector('.vista-detalle');
-      const contenidoDetalle = document.getElementById('contenido-detalle');
-      
-      // Encontrar todos los vehículos que pertenecen a esta MicroRed
-      const vehiculosDeMicroRed = datos.filter(v => v.MicroRed === microred);
-      
-      if (vehiculosDeMicroRed.length > 0) {
-        // Mostrar información detallada de los vehículos
-        let contenidoHTML = `
-          <div class="title">Ambulancias de la MicroRed: ${microred}</div>
-        `;
-        
-        vehiculosDeMicroRed.forEach((vehiculo, index) => {
-          const estadoClass = vehiculo.Estado.toLowerCase() === 'bueno' ? 'estado-bueno' : 
-                             vehiculo.Estado.toLowerCase() === 'regular' ? 'estado-regular' : 'estado-malo';
-          
-          contenidoHTML += `
-            <div class="vehiculo-container">
-              <div class="vehiculo-header">
-                ${ambulanceSVG}
-                Ambulancia ${index + 1} - ${vehiculo.Marca} ${vehiculo.Modelo}
-              </div>
-              
-              <div class="datos-con-imagen">
-  
-  <div class="datos-usuario">
-    <div class="info-row">
-      <div class="info-label">IPRESS:</div>
-      <div class="info-value">${vehiculo.Ipress}</div>
-    </div>
-    
-    <div class="info-row">
-      <div class="info-label">Estado:</div>
-      <div class="info-value"><span class="estado ${estadoClass}">${vehiculo.Estado}</span></div>
-    </div>
-    
-    <div class="info-row">
-      <div class="info-label">Placa:</div>
-      <div class="info-value">${vehiculo.Placa}</div>
-    </div>
-    
-    <div class="info-row">
-      <div class="info-label">Cód. Patrimonio:</div>
-      <div class="info-value">${vehiculo["Codigo Patrimonial"]}</div>
-    </div>
-    
-    <div class="info-row">
-      <div class="info-label">Fabricación:</div>
-      <div class="info-value">${vehiculo["Año de Fabricacion"]}</div>
-    </div>
-    
-    <div class="info-row">
-      <div class="info-label">SOAT:</div>
-      <div class="info-value">${vehiculo.SOAT}</div>
-    </div>
-    
-    <div class="info-row">
-      <div class="info-label">Revisión Técnica:</div>
-      <div class="info-value">${vehiculo["Revision Tecnica"]}</div>
-    </div>
-  </div>
-
-  <div class="imagen-vehiculo">
-    <img src="ambulancia.png" alt="Imagen del vehículo">
-  </div>
-
-</div>
-
-
-              
-              
-              <div class="title" style="margin-top: 20px;">Datos del Conductor</div>
-              
-              <div class="datos-usuario">
-                <div class="info-row">
-                  <div class="info-label">Nombres:</div>
-                  <div class="info-value">${vehiculo["Nombres del Conductor"]}</div>
-                </div>
-                
-                <div class="info-row">
-                  <div class="info-label">DNI:</div>
-                  <div class="info-value">${vehiculo["DNI Conductor"]}</div>
-                </div>
-                
-                <div class="info-row">
-                  <div class="info-label">Contrato:</div>
-                  <div class="info-value">${vehiculo["Tipo de Contrato"]}</div>
-                </div>
-                
-                <div class="info-row">
-                  <div class="info-label">N° de Licencia:</div>
-                  <div class="info-value">${vehiculo["Nro de Licencia"]}</div>
-                </div>
-                
-                <div class="info-row">
-                  <div class="info-label">Fecha Venc:</div>
-                  <div class="info-value">${vehiculo["Fecha Vencimiento - Licencia"]}</div>
-                </div>
-                
-                <div class="info-row">
-                  <div class="info-label">Celular:</div>
-                  <div class="info-value">${vehiculo.Celular}</div>
-                </div>
-              </div>
-            </div>
-          `;
-        });
-        
-        contenidoDetalle.innerHTML = contenidoHTML;
-      } else {
-        contenidoDetalle.innerHTML = `<p class="error">No se encontraron ambulancias para la MicroRed: ${microred}</p>`;
-      }
-      
-      // Cambiar de vista
-      vistaPrincipal.style.display = 'none';
-      vistaDetalle.style.display = 'block';
-    }
-
-    // Función para volver al listado
-    function mostrarListado() {
-      const vistaPrincipal = document.querySelector('.vista-principal');
-      const vistaDetalle = document.querySelector('.vista-detalle');
-      
-      vistaDetalle.style.display = 'none';
-      vistaPrincipal.style.display = 'block';
-    }
-
-    // Función para filtrar MicroRedes
-    function filtrarMicroRedes() {
-      const textoBusqueda = document.getElementById('buscador').value.toLowerCase();
-      const listaMicroRedes = document.getElementById('lista-microredes');
-      const microredesUnicas = obtenerMicroRedesUnicas();
-      
-      listaMicroRedes.innerHTML = '';
-      
-      const resultadosFiltrados = microredesUnicas.filter(microred => 
-        microred.toLowerCase().includes(textoBusqueda)
-      );
-      
-      if (resultadosFiltrados.length === 0) {
-        listaMicroRedes.innerHTML = '<p class="error">No se encontraron resultados para la búsqueda.</p>';
-        return;
-      }
-      
-      resultadosFiltrados.forEach(microred => {
-        const totalVehiculos = contarVehiculosPorMicroRed(microred);
-        const card = document.createElement('div');
-        card.className = 'microred-card';
-        card.innerHTML = `
-          <div class="card-header">
-            ${ambulanceSVG}
-            <h3>${microred}</h3>
+        <div class="top-bar">
+          <div class="ambulancias-total">
+            Total de Ambulancias: <span id="total-ambulancias">4</span>
           </div>
-          <p><strong>Total de ambulancias:</strong> ${totalVehiculos}</p>
-          <button class="ver-detalle" onclick="verDetalle('${microred}')">Ver ambulancias</button>
-        `;
-        listaMicroRedes.appendChild(card);
-      });
-    }
+          <button class="boton-detalles" onclick="window.location.href='detalles.html'">
+            Detalles
+        </button>
+          <button class="boton-estado" onclick="abrirModalEstado()">
+            Estado
+          </button>
+          <button class="boton-modal" onclick="abrirModal()">
+            Ambulancias
+          </button>
+        </div>
 
-    // Cargar las MicroRedes al iniciar la página
-    window.onload = function() {
-      cargarMicroRedes();
-    };
+        <div class="search-container">
+          <input
+            type="text"
+            id="buscador"
+            placeholder="Buscar por MicroRed..."
+            onkeyup="filtrarMicroRedes()"
+          />
+        </div>
 
+        <div class="microredes-list" id="lista-microredes">
+          <!-- Aquí se cargarán los cuadritos de MicroRedes -->
+        </div>
+      </div>
 
+      <!-- Modal -->
+      <div id="miModal" class="modal">
+        <div class="modal-contenido">
+          <span class="cerrar" onclick="cerrarModal()">&times;</span>
+          <img src="logo_red.jpg" alt="Logo de la Red" class="logo-modal" />
+          <h3 style="text-align: center">Ambulancias por MicroRed</h3>
+          <div id="columnchart_values" style="width: 100%; height: 300px"></div>
+        </div>
+      </div>
 
-    google.charts.load("current", {packages:['corechart']});
-  google.charts.setOnLoadCallback(drawChart);
-  
-  function drawChart() {
-  // Get the unique MicroRed names
-  const microredesUnicas = obtenerMicroRedesUnicas();
-  
-  // Create data array for the chart with headers
-  let chartData = [["MicroRed", "Cantidad", { role: "style" }]];
-  
-  // Define colors for each bar
-  const colors = ["#3366CC", "#DC3912", "#FF9900", "#109618", "#990099", "#0099C6", "#DD4477", "#66AA00"];
-  
-  // Add data for each MicroRed
-  microredesUnicas.forEach((microred, index) => {
-    const cantidadAmbulancia = contarVehiculosPorMicroRed(microred);
-    // Use colors[index % colors.length] to cycle through colors if there are more MicroReds than colors
-    chartData.push([microred, cantidadAmbulancia, colors[index % colors.length]]);
-  });
-  
-  var data = google.visualization.arrayToDataTable(chartData);
+      <!-- Modal ESTADO-->
+      <div id="miModalEstado" class="modal">
+        <div class="modal-contenido">
+          <span class="cerrar" onclick="cerrarModalEstado()">&times;</span>
+          <img src="logo_red.jpg" alt="Logo de la Red" class="logo-modal" />
+          <h3 style="text-align: center">Estado de Ambulancias</h3>
+          <div
+            id="columnchart_values_Estado"
+            style="width: 100%; height: 300px"
+          ></div>
+        </div>
+      </div>
 
-  var view = new google.visualization.DataView(data);
-  view.setColumns([0, 1,
-                   { calc: "stringify",
-                     sourceColumn: 1,
-                     type: "string",
-                     role: "annotation" },
-                   2]);
+      <div class="vista-detalle" id="detalle-microred">
+        <button class="boton-volver" onclick="mostrarListado()">
+          ← Volver al listado
+        </button>
+        <div id="contenido-detalle"></div>
+      </div>
 
-  var options = {
-    title: "--",
-    width: '100%',
-    height: 300,
-    bar: {groupWidth: "65%"},
-    legend: { position: "none" },
-    chartArea: {
-      width: '80%',
-      height: '70%'
-    },
-    hAxis: {
-      textStyle: {
-        fontSize: 12
-      }
-    },
-    vAxis: {
-      minValue: 0,
-      textStyle: {
-        fontSize: 12
-      }
-    },
-    backgroundColor: 'transparent'
-  };
+      <!-- Nueva vista de detalles general -->
+      <div class="vista-detalles-general" id="vista-detalles-general" style="display: none;">
+        <button class="boton-volver" onclick="volverDesdeDetallesGeneral()">
+          ← Volver al listado
+        </button>
+        <div class="detalles-general-container">
+          <h2>Detalles Generales</h2>
+          
+          <div class="section-title">
+            <h3>Resumen de Ambulancias</h3>
+          </div>
+          
+          <div class="section-title">
+            <h3>Estado de Ambulancias</h3>
+          </div>
+          
+          <div class="section-title">
+            <h3>Conductores</h3>
+          </div>
+          
+          <div class="section-title">
+            <h3>Documentación</h3>
+          </div>
+          
+          <div class="section-title">
+            <h3>Mantenimiento</h3>
+          </div>
+        </div>
+      </div>
 
-  var chart = new google.visualization.ColumnChart(document.getElementById("columnchart_values"));
-  
-  // Make chart responsive
-  function resizeChart() {
-    chart.draw(view, options);
-  }
-  
-  // Initial draw
-  resizeChart();
-  
-  // Redraw chart when window is resized
-  window.addEventListener('resize', resizeChart);
-}
-  
-  // Function to open and close modal
-  function abrirModal() {
-    document.getElementById("miModal").style.display = "block";
-    // Redraw chart when modal opens to ensure proper sizing
-    google.charts.setOnLoadCallback(drawChart);
-  }
-  
-  function cerrarModal() {
-    document.getElementById("miModal").style.display = "none";
-  }
-  
-  // Close modal when clicking outside of it
-  window.onclick = function(event) {
-    var modal = document.getElementById("miModal");
-    if (event.target == modal) {
-      modal.style.display = "none";
-    }
-  }
-  </script>
+      
+    </div>
+  </body>
 
-</body>
-
+  <script
+      type="text/javascript"
+      src="procesos.js"
+    ></script>
 </html>
